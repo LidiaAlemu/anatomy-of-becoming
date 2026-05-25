@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="Shared Thoughts — Anatomy of Becoming"
+  description="A safe space for anonymous stories. Share what's on your heart."
+>
+  <section class="container-soft py-section max-w-3xl mx-auto">
+    <h1 class="font-serif text-display text-espresso mb-4 text-center">
+      <span class="handwriting text-5xl md:text-6xl block mb-2">stories from other hearts</span>
+    </h1>
+    <p class="section-subtitle">
+      A space for the thoughts people never said out loud.
+      Anonymous stories, real people, raw and unfiltered.
+    </p>
+
+    <div class="divider"></div>
+
+    <!-- Submission Form -->
+    <div class="card p-8 md:p-12 mb-12">
+      <h2 class="font-serif text-2xl text-espresso mb-6 text-center">Share Your Story</h2>
+      <form action="https://formspree.io/f/your-form-id" method="POST" class="space-y-6">
+        <div>
+          <label class="block text-taupe text-sm font-sans mb-2">Your Story</label>
+          <textarea 
+            name="story" 
+            rows="6" 
+            placeholder="Write what's on your heart. Everything shared is anonymous."
+            required
+            class="w-full px-5 py-3 rounded-soft bg-ivory border border-softborder text-espresso placeholder:text-taupe/50 focus:outline-none focus:border-rose/50 font-sans text-sm resize-y"
+          ></textarea>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn-primary">Share Anonymously</button>
+        </div>
+      </form>
+      <p class="text-xs text-taupe/60 text-center mt-4 font-sans">
+        Your story will be shared anonymously. No names or identifying information will be published.
+      </p>
+    </div>
+
+    <!-- Previously Shared Stories -->
+    <h2 class="font-serif text-2xl text-espresso mb-8 text-center">Recently Shared</h2>
+    <div class="space-y-6">
+      <div class="card p-6 flex items-start gap-5">
+        <div class="w-10 h-10 rounded-full bg-rose/20 flex items-center justify-center flex-shrink-0">
+          <span class="font-serif text-rose text-lg">A</span>
+        </div>
+        <p class="text-espresso/80 italic text-sm leading-relaxed">
+          "I stayed in a relationship long after I knew it was hurting me. I was more afraid of being alone than I was of losing myself."
+        </p>
+      </div>
+      <div class="card p-6 flex items-start gap-5">
+        <div class="w-10 h-10 rounded-full bg-rose/20 flex items-center justify-center flex-shrink-0">
+          <span class="font-serif text-rose text-lg">M</span>
+        </div>
+        <p class="text-espresso/80 italic text-sm leading-relaxed">
+          "I come from a family where love was conditional. I'm still learning that I'm allowed to take up space."
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

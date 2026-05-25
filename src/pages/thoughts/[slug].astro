@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await Astro.glob('../../content/blog/*.md');
+  
+  return posts.map(post => ({
+    params: { slug: post.frontmatter.slug || 'default' },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props;
+const { frontmatter } = post;
+---
+
+<BaseLayout 
+  title={`${frontmatter.title} — Anatomy of Becoming`}
+  description={frontmatter.excerpt}
+>
+  <article class="container-soft py-section max-w-3xl mx-auto">
+    <!-- Back link -->
+    <a href="/#thoughts" class="text-taupe hover:text-espresso font-sans text-sm tracking-wider uppercase mb-8 inline-flex items-center gap-2">
+      ← Back to Thoughts
+    </a>
+
+    <!-- Category -->
+    {frontmatter.category && (
+      <span class="text-xs font-sans tracking-widest uppercase text-rose font-medium block mb-4">
+        {frontmatter.category}
+      </span>
+    )}
+
+    <!-- Title -->
+    <h1 class="font-serif text-display text-espresso mb-6 text-balance">
+      {frontmatter.title}
+    </h1>
+
+    <!-- Date -->
+    {frontmatter.date && (
+      <p class="text-taupe text-sm font-sans mb-8">{frontmatter.date}</p>
+    )}
+
+    <!-- Featured Image -->
+    {frontmatter.image && (
+      <img 
+        src={frontmatter.image} 
+        alt={frontmatter.title}
+        class="w-full rounded-softer shadow-soft mb-10"
+      />
+    )}
+
+    <!-- Post Content -->
+    <div class="prose-soft">
+      <slot />
+    </div>
+
+    <!-- Divider -->
+    <div class="divider my-12"></div>
+
+    <!-- Author Note -->
+    <div class="card p-8 text-center">
+      <p class="handwriting text-2xl mb-2">with love,</p>
+      <p class="text-taupe text-sm font-light">
+        Thank you for being here. These are the thoughts I never said — 
+        and maybe some of them are yours too.
+      </p>
+    </div>
+
+    <!-- Share links -->
+    <div class="text-center mt-8">
+      <p class="text-xs text-taupe/60 font-sans tracking-wider uppercase mb-3">Share this thought</p>
+      <div class="flex justify-center gap-4">
+        <a href="#" class="text-taupe hover:text-rose transition-colors text-sm font-sans">Twitter</a>
+        <a href="#" class="text-taupe hover:text-rose transition-colors text-sm font-sans">Pinterest</a>
+        <a href="#" class="text-taupe hover:text-rose transition-colors text-sm font-sans">Copy Link</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
