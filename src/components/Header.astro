@@ -7,13 +7,13 @@
     <a href="/#med-school" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">Med School Diaries</a>
   </nav>
 
-  <!-- Center Logo -->
+  <!-- Center Logo – now cursive -->
   <div class="text-center mx-auto lg:mx-0">
     <a href="/" class="block group">
-      <h1 class="font-serif text-2xl md:text-3xl text-espresso tracking-wide leading-tight group-hover:text-mauve transition-colors">
+      <h1 class="handwriting text-3xl md:text-4xl text-rose group-hover:text-mauve transition-colors leading-tight">
         anatomy of becoming
       </h1>
-      <p class="handwriting text-lg md:text-xl leading-none -mt-1">
+      <p class="handwriting text-sm md:text-base leading-none -mt-1 text-taupe/70">
         thoughts i never said
       </p>
     </a>
@@ -21,13 +21,20 @@
 
   <!-- Right Navigation -->
   <nav class="hidden lg:flex items-center gap-8">
-    <a href="/#weekly-notes" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">Weekly Notes</a>
+    <a href="/weekly-notes" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">Weekly Notes</a>
     <a href="/shared-thoughts" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">Shared Thoughts</a>
-    <a href="/#little-things" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">Recs</a>
+    <a href="/recs" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">Recs</a>
     <a href="/#letters" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">Letters</a>
   </nav>
 
-  <!-- Mobile Menu Toggle -->
+  <!-- Search icon only -->
+  <div class="hidden lg:flex items-center ml-4">
+    <button aria-label="Search" class="text-taupe hover:text-rose transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    </button>
+  </div>
+
+  <!-- Mobile Menu (no social icons) -->
   <button class="lg:hidden text-espresso p-2" aria-label="Menu">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <line x1="4" x2="20" y1="12" y2="12"/>
@@ -35,20 +42,4 @@
       <line x1="4" x2="20" y1="18" y2="18"/>
     </svg>
   </button>
-
-  <!-- Social Icons -->
-  <div class="hidden lg:flex items-center gap-4 ml-4">
-    <a href="#" aria-label="Instagram" class="text-taupe hover:text-rose transition-colors">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-    </a>
-    <a href="#" aria-label="Pinterest" class="text-taupe hover:text-rose transition-colors">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 0-3.03 19.5c-.08-.85.02-1.86.2-2.78l1.2-5.07s-.3-.6-.3-1.48c0-1.39.8-2.43 1.8-2.43.85 0 1.26.64 1.26 1.4 0 .86-.54 2.14-.82 3.33-.24.98.5 1.78 1.47 1.78 1.76 0 3.12-1.86 3.12-4.55 0-2.38-1.7-4.05-4.14-4.05-2.82 0-4.48 2.12-4.48 4.3 0 .86.33 1.77.74 2.27a.3.3 0 0 1 .07.28c-.07.3-.24.98-.28 1.12-.04.18-.15.22-.34.13-1.27-.59-2.07-2.44-2.07-3.93 0-3.2 2.33-6.14 6.7-6.14 3.52 0 6.26 2.5 6.26 5.86 0 3.5-2.2 6.31-5.26 6.31-1.03 0-2-.53-2.33-1.16l-.63 2.42c-.23.88-.86 1.98-1.28 2.65A9.96 9.96 0 0 0 12 22a10 10 0 0 0 0-20z"/></svg>
-    </a>
-    <a href="#" aria-label="Email" class="text-taupe hover:text-rose transition-colors">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-    </a>
-    <button aria-label="Search" class="text-taupe hover:text-rose transition-colors">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-    </button>
-  </div>
 </header>

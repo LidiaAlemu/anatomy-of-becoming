@@ -1,7 +1,11 @@
 ---
-const { title = "Anatomy of Becoming", description = "Thoughts I never said. A healing blog about identity, womanhood, grief, and becoming." } = Astro.props;
----
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';  
 
+const title = Astro.props.title || "Anatomy of Becoming";
+const description = Astro.props.description || "Thoughts I never said. A healing blog about identity, womanhood, grief, and becoming.";
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,8 +28,3 @@ const { title = "Anatomy of Becoming", description = "Thoughts I never said. A h
   <Footer />
 </body>
 </html>
-
-<script>
-  import Header from '../components/Header.astro';
-  import Footer from '../components/Footer.astro';
-</script>
