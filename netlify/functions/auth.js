@@ -1,7 +1,4 @@
-// netlify/functions/auth.js
-const { createClient } = require('@octokit/rest');
-
-exports.handler = async function (event, context) {
+exports.handler = async function (event) {
   const code = event.queryStringParameters?.code;
   if (!code) {
     return {
@@ -21,7 +18,8 @@ exports.handler = async function (event, context) {
   }
 
   try {
-    const response = await fetch('https://github.com/login/oauth/access_token', {
+    // Exchange the code for an access token
+    const tokenResponse = await fetch('https://github.com/login/oauth/access_token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -34,18 +32,24 @@ exports.handler = async function (event, context) {
       }),
     });
 
-    const data = await response.json();
-    if (data.error) throw new Error(data.error_description || data.error);
+    const tokenData = await tokenResponse.json();
+    if (tokenData.error) throw new Error(tokenData.error_description || tokenData.error);
 
-    // Use the access token to get user info (optional, but good)
-    const octokit = new createClient({ auth: data.access_token });
-    const user = await octokit.rest.users.getAuthenticated();
+    // Use the access token to get the authenticated user
+    const userResponse = await fetch('https://api.github.com/user', {
+      headers: {
+        Authorization: `Bearer ${tokenData.access_token}`,
+        Accept: 'application/vnd.github.v3+json',
+      },
+    });
+
+    const userData = await userResponse.json();
 
     return {
       statusCode: 200,
       body: JSON.stringify({
-        token: data.access_token,
-        user: user.data.login,
+        token: tokenData.access_token,
+        user: userData.login,
       }),
     };
   } catch (error) {
