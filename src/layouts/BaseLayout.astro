@@ -26,5 +26,20 @@ const description = Astro.props.description || "Thoughts I never said. A healing
     <slot />
   </main>
   <Footer />
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", user => {
+      if (!user) {
+        window.netlifyIdentity.on("login", () => {
+          // Once they've set their password, send them to the CMS
+          document.location.href = "/admin/";
+        });
+      }
+    });
+    // This handles the token from the invite link and triggers the password setup
+    window.netlifyIdentity.handleAuthCallback();
+  }
+</script>
 </body>
 </html>
