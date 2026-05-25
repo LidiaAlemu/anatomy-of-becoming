@@ -1,5 +1,17 @@
 exports.handler = async function (event) {
-  const code = event.queryStringParameters?.code;
+  // Try to get code from query string (GET) or request body (POST)
+  let code;
+  if (event.queryStringParameters && event.queryStringParameters.code) {
+    code = event.queryStringParameters.code;
+  } else if (event.body) {
+    try {
+      const body = JSON.parse(event.body);
+      code = body.code;
+    } catch (e) {
+      // body not JSON, ignore
+    }
+  }
+
   if (!code) {
     return {
       statusCode: 400,
@@ -35,7 +47,7 @@ exports.handler = async function (event) {
     const tokenData = await tokenResponse.json();
     if (tokenData.error) throw new Error(tokenData.error_description || tokenData.error);
 
-    // Use the access token to get the authenticated user
+    // Get the authenticated user
     const userResponse = await fetch('https://api.github.com/user', {
       headers: {
         Authorization: `Bearer ${tokenData.access_token}`,

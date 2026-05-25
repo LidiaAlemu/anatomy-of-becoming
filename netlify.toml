@@ -9,3 +9,6 @@
   from = "/admin"
   to = "/admin/index.html"
   status = 200
+
+[functions]
+  directory = "netlify/functions"
