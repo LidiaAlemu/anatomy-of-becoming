@@ -1,11 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// Real Giscus configuration
-const giscusRepo = "LidiaAlemu/anatomy-of-becoming";
-const giscusRepoId = "R_kgDOSnPXvA";
-const giscusCategory = "General";
-const giscusCategoryId = "DIC_kwDOSnPXvM4C9zST";
+const cusdisAppId = "your-cusdis-app-id";                // ← paste your real App ID here
+const formspreeEndpoint = "https://formspree.io/f/xdajlrpe";   // already set
 
 const stories = [
   { id: 1, text: "I stayed in a relationship long after I knew it was hurting me. I was more afraid of being alone than I was of losing myself.", initial: "A" },
@@ -32,7 +29,7 @@ const stories = [
     <!-- Submission Form -->
     <div class="card p-8 md:p-12 mb-16">
       <h2 class="font-serif text-2xl text-espresso mb-6 text-center">Share Your Story</h2>
-      <form action="https://formspree.io/f/your-form-id" method="POST" class="space-y-6">
+      <form action={formspreeEndpoint} method="POST" class="space-y-6">
         <div>
           <label class="block text-taupe text-sm font-sans mb-2">Your Story</label>
           <textarea
@@ -52,7 +49,7 @@ const stories = [
       </p>
     </div>
 
-    <!-- Stories Cards with Comments -->
+    <!-- Stories Cards with Cusdis Comments -->
     <div class="space-y-12">
       {stories.map((story) => (
         <div id={`story-${story.id}`}>
@@ -62,26 +59,42 @@ const stories = [
             </div>
             <p class="text-espresso/80 italic text-base leading-relaxed">“{story.text}”</p>
           </div>
-          <!-- Giscus comment thread for this story -->
-          <div class="mt-4 ml-6">
-            <script src="https://giscus.app/client.js"
-              data-repo={giscusRepo}
-              data-repo-id={giscusRepoId}
-              data-category={giscusCategory}
-              data-category-id={giscusCategoryId}
-              data-mapping="specific"
-              data-term={`Story ${story.id}`}
-              data-reactions-enabled="1"
-              data-emit-metadata="0"
-              data-input-position="bottom"
-              data-theme="preferred_color_scheme"
-              data-lang="en"
-              crossorigin="anonymous"
-              async>
-            </script>
+
+          <!-- Cusdis comment thread (anonymous, no sign-in) -->
+          <div class="mt-4 ml-6 cusdis-wrapper">
+            <div
+              id={`cusdis_thread_${story.id}`}
+              data-host="https://cusdis.com"
+              data-app-id={cusdisAppId}
+              data-page-id={`story-${story.id}`}
+              data-page-url={`${new URL(Astro.url.pathname, Astro.url.origin).href}#story-${story.id}`}
+              data-page-title={`Story ${story.id} — Anatomy of Becoming`}
+            ></div>
+            <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
           </div>
         </div>
       ))}
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  /* Soft Cusdis theme matching your brand */
+  .cusdis-wrapper {
+    --cusdis-bg: #F7F2EF;
+    --cusdis-text: #4A3734;
+    --cusdis-border: #EADDD7;
+    --cusdis-primary: #C9A7A0;
+    --cusdis-primary-hover: #B8958A;
+    --cusdis-muted: #8E7B75;
+    --cusdis-radius: 0.75rem;
+    --cusdis-font: 'Montserrat', sans-serif;
+  }
+  .cusdis-wrapper iframe {
+    border: none !important;
+    background: transparent !important;
+  }
+  .cusdis-powered-by {
+    display: none;
+  }
+</style>
