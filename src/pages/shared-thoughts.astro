@@ -1,14 +1,17 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const cusdisAppId = "10d1bb87-b0b2-4431-9ee1-90a65bd646a8";                // ← paste your real App ID here
-const formspreeEndpoint = "https://formspree.io/f/xdajlrpe";   // already set
+const cusdisAppId = "10d1bb87-b0b2-4431-9ee1-90a65bd646a8";
+const formspreeEndpoint = "https://formspree.io/f/xdajlrpe";
 
 const stories = [
   { id: 1, text: "I stayed in a relationship long after I knew it was hurting me. I was more afraid of being alone than I was of losing myself.", initial: "A" },
   { id: 2, text: "I come from a family where love was conditional. I'm still learning that I'm allowed to take up space.", initial: "M" },
   { id: 3, text: "Everyone saw me as the strong one. No one noticed how heavy everything was on the inside.", initial: "K" }
 ];
+
+// Construct the base URL for the current page (used in Cusdis page-url)
+const baseUrl = Astro.url.origin + Astro.url.pathname;
 ---
 
 <BaseLayout
@@ -60,17 +63,16 @@ const stories = [
             <p class="text-espresso/80 italic text-base leading-relaxed">“{story.text}”</p>
           </div>
 
-          <!-- Cusdis comment thread (anonymous, no sign-in) -->
+          <!-- Cusdis Thread -->
           <div class="mt-4 ml-6 cusdis-wrapper">
             <div
               id={`cusdis_thread_${story.id}`}
               data-host="https://cusdis.com"
               data-app-id={cusdisAppId}
               data-page-id={`story-${story.id}`}
-              data-page-url={`${new URL(Astro.url.pathname, Astro.url.origin).href}#story-${story.id}`}
+              data-page-url={`${baseUrl}#story-${story.id}`}
               data-page-title={`Story ${story.id} — Anatomy of Becoming`}
             ></div>
-            <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
           </div>
         </div>
       ))}
@@ -78,8 +80,11 @@ const stories = [
   </section>
 </BaseLayout>
 
+<!-- Cusdis script, loaded once -->
+<script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+
 <style>
-  /* Soft Cusdis theme matching your brand */
+  /* Soft Cusdis theme matching brand */
   .cusdis-wrapper {
     --cusdis-bg: #F7F2EF;
     --cusdis-text: #4A3734;

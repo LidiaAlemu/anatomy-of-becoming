@@ -1,5 +1,5 @@
-<header class="container-soft py-6 flex items-center justify-between border-b border-softborder/50 mb-0">
-  <!-- Left Navigation -->
+<header class="container-soft py-6 flex items-center justify-between border-b border-softborder/50 relative">
+  <!-- Left Navigation (desktop) -->
   <nav class="hidden lg:flex items-center gap-8">
     <a href="/" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">Home</a>
     <a href="/about" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">About</a>
@@ -7,7 +7,7 @@
     <a href="/#med-school" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">Med School Diaries</a>
   </nav>
 
-  <!-- Center Logo – now cursive -->
+  <!-- Center Logo -->
   <div class="text-center mx-auto lg:mx-0">
     <a href="/" class="block group">
       <h1 class="handwriting text-3xl md:text-4xl text-rose group-hover:text-mauve transition-colors leading-tight">
@@ -19,7 +19,7 @@
     </a>
   </div>
 
-  <!-- Right Navigation -->
+  <!-- Right Navigation (desktop) -->
   <nav class="hidden lg:flex items-center gap-8">
     <a href="/weekly-notes" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">Weekly Notes</a>
     <a href="/shared-thoughts" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">Shared Thoughts</a>
@@ -27,19 +27,52 @@
     <a href="/#letters" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">Letters</a>
   </nav>
 
-  <!-- Search icon only -->
+  <!-- Search icon (desktop) -->
   <div class="hidden lg:flex items-center ml-4">
     <button aria-label="Search" class="text-taupe hover:text-rose transition-colors">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
     </button>
   </div>
 
-  <!-- Mobile Menu (no social icons) -->
-  <button class="lg:hidden text-espresso p-2" aria-label="Menu">
+  <!-- Mobile hamburger button -->
+  <button id="menu-toggle" class="lg:hidden text-espresso p-2 z-50" aria-label="Menu">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <line x1="4" x2="20" y1="12" y2="12"/>
       <line x1="4" x2="20" y1="6" y2="6"/>
       <line x1="4" x2="20" y1="18" y2="18"/>
     </svg>
   </button>
+
+  <!-- Mobile menu overlay -->
+  <div id="mobile-menu" class="hidden fixed inset-0 bg-ivory/95 backdrop-blur-sm z-40 flex flex-col items-center justify-center gap-8 text-xl font-serif text-espresso">
+    <a href="/" class="hover:text-rose transition-colors">Home</a>
+    <a href="/about" class="hover:text-rose transition-colors">About</a>
+    <a href="/#thoughts" class="hover:text-rose transition-colors">Thoughts</a>
+    <a href="/weekly-notes" class="hover:text-rose transition-colors">Weekly Notes</a>
+    <a href="/shared-thoughts" class="hover:text-rose transition-colors">Shared Thoughts</a>
+    <a href="/recs" class="hover:text-rose transition-colors">Recs</a>
+    <a href="/#letters" class="hover:text-rose transition-colors">Letters</a>
+    <button id="menu-close" class="mt-8 text-taupe hover:text-rose transition-colors text-sm uppercase tracking-wider">Close</button>
+  </div>
 </header>
+
+<script>
+  const menuToggle = document.getElementById('menu-toggle');
+  const menuClose = document.getElementById('menu-close');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  menuToggle.addEventListener('click', () => {
+    mobileMenu.classList.remove('hidden');
+  });
+
+  menuClose.addEventListener('click', () => {
+    mobileMenu.classList.add('hidden');
+  });
+
+  // Close menu when a link is clicked
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+    });
+  });
+</script>
