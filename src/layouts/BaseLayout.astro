@@ -19,22 +19,6 @@ const description = Astro.props.description || "Thoughts I never said. A healing
   <title>{title}</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="stylesheet" href="/src/styles/global.css" />
-
-  <!-- Netlify Identity Widget – load early to catch invitation token -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
-      });
-      // Process the invitation or password reset token immediately
-      window.netlifyIdentity.handleAuthCallback();
-    }
-  </script>
 </head>
 <body class="min-h-screen flex flex-col">
   <Header />
