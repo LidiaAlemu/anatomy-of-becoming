@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const weeklyThoughts = [
+  "choosing peace over proving my worth",
+  "unlearning the need to always be available",
+  "realizing I can start over many times",
+  "romanticizing my healing era"
+];
+
+const smallSteps = [
+  "Woke up 30 minutes earlier to journal",
+  "Said no to a social invitation that drained me",
+  "Walked outside without my phone for 20 minutes",
+  "Listened to a new healing playlist"
+];
+---
+
+<BaseLayout
+  title="Weekly Notes — Anatomy of Becoming"
+  description="Weekly reflections and small steps on the healing journey."
+>
+  <section class="container-soft py-section max-w-3xl mx-auto">
+    <h1 class="font-serif text-display text-espresso mb-4 text-center">
+      <span class="handwriting text-5xl md:text-6xl block mb-2">Weekly Notes</span>
+    </h1>
+    <p class="section-subtitle">
+      Gentle thoughts from the past week, and the tiny steps that moved me forward.
+    </p>
+
+    <div class="grid sm:grid-cols-2 gap-6 mb-16">
+      {weeklyThoughts.map(thought => (
+        <div class="card p-6">
+          <p class="text-espresso/80 leading-relaxed italic">“{thought}”</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="card p-8 md:p-10 bg-blush/20 border-softborder/50">
+      <h2 class="font-serif text-2xl text-espresso mb-6">Small Steps I Took This Week</h2>
+      <ul class="space-y-4">
+        {smallSteps.map(step => (
+          <li class="flex items-start gap-3 text-taupe">
+            <span class="text-rose text-lg mt-0.5">•</span>
+            <span class="text-base">{step}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
