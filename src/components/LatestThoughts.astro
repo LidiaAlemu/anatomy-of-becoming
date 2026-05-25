@@ -1,0 +1,80 @@
+---
+import ThoughtCard from './ThoughtCard.astro';
+
+const latestPosts = [
+  {
+    title: "Thoughts on Letting Go of Someone You Still Love",
+    excerpt: "Some goodbyes are quiet. You don't block them. You just understand that staying will destroy you.",
+    slug: "letting-go-of-someone-you-still-love",
+    category: "Healing",
+    date: "October 2024"
+  },
+  {
+    title: "Thoughts on Leaving Medical School",
+    excerpt: "Leaving wasn't failure. It was survival.",
+    slug: "leaving-medical-school",
+    category: "Med School Diaries",
+    date: "September 2024"
+  },
+  {
+    title: "Thoughts on the Versions of Me I Outgrew",
+    excerpt: "I miss parts of her. But I don't miss the life I had to survive in.",
+    slug: "versions-of-me-i-outgrew",
+    category: "Identity",
+    date: "September 2024"
+  }
+];
+---
+
+<section id="thoughts" class="container-soft py-section">
+  <h2 class="section-title">Latest Thoughts</h2>
+  <p class="section-subtitle">Words from the quiet places between healing and becoming.</p>
+
+  <div class="grid lg:grid-cols-3 gap-8 lg:gap-10">
+    <div class="lg:col-span-2 grid md:grid-cols-2 gap-8">
+      {latestPosts.map((post) => (
+        <ThoughtCard 
+          title={post.title} 
+          excerpt={post.excerpt} 
+          slug={post.slug} 
+          category={post.category} 
+          date={post.date} 
+        />
+      ))}
+    </div>
+
+    <!-- Side Panel: Weekly Notes -->
+    <aside class="lg:col-span-1">
+      <div class="card p-8 sticky top-8">
+        <h3 class="font-serif text-xl text-espresso mb-4">This Week, I'm Thinking About</h3>
+        <ul class="space-y-4">
+          <li class="flex items-start gap-3 text-taupe text-sm leading-relaxed">
+            <span class="text-rose mt-0.5">•</span>
+            choosing peace over proving my worth
+          </li>
+          <li class="flex items-start gap-3 text-taupe text-sm leading-relaxed">
+            <span class="text-rose mt-0.5">•</span>
+            unlearning the need to always be available
+          </li>
+          <li class="flex items-start gap-3 text-taupe text-sm leading-relaxed">
+            <span class="text-rose mt-0.5">•</span>
+            realizing I can start over many times
+          </li>
+          <li class="flex items-start gap-3 text-taupe text-sm leading-relaxed">
+            <span class="text-rose mt-0.5">•</span>
+            romanticizing my healing era
+          </li>
+        </ul>
+        <div class="mt-8 pt-6 border-t border-softborder/50">
+          <p class="handwriting text-xl text-center text-rose/70">
+            We are always becoming.
+          </p>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="text-center mt-12">
+    <a href="/thoughts" class="btn-secondary">View All Thoughts</a>
+  </div>
+</section>

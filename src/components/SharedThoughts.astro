@@ -1,0 +1,51 @@
+---
+const stories = [
+  {
+    text: "I stayed in a relationship long after I knew it was hurting me. I was more afraid of being alone than I was of losing myself.",
+    initial: "A"
+  },
+  {
+    text: "I come from a family where love was conditional. I'm still learning that I'm allowed to take up space.",
+    initial: "M"
+  },
+  {
+    text: "Everyone saw me as the strong one. No one noticed how heavy everything was on the inside.",
+    initial: "K"
+  }
+];
+---
+
+<section id="shared-thoughts" class="bg-blush/30 py-section">
+  <div class="container-soft">
+    <h2 class="section-title">
+      <span class="handwriting text-4xl md:text-5xl block mb-1">stories from other hearts</span>
+    </h2>
+    <p class="section-subtitle">
+      A space for the thoughts people never said out loud. 
+      Anonymous stories, real people, raw and unfiltered.
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-8 items-start">
+      <div class="space-y-6">
+        {stories.map((story, i) => (
+          <div class={`card p-6 flex items-start gap-5 animate-slide-up stagger-${i + 1}`}>
+            <div class="w-10 h-10 rounded-full bg-rose/20 flex items-center justify-center flex-shrink-0">
+              <span class="font-serif text-rose text-lg">{story.initial}</span>
+            </div>
+            <p class="text-espresso/80 italic text-sm leading-relaxed">"{story.text}"</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="card p-10 text-center animate-slide-up stagger-2">
+        <p class="handwriting text-3xl mb-4">your story matters here.</p>
+        <p class="text-taupe text-sm leading-relaxed mb-8">
+          This is a safe, anonymous space. <br />
+          Share what's on your heart. <br />
+          It might help someone feel less alone.
+        </p>
+        <a href="/shared-thoughts" class="btn-primary">Share Your Story</a>
+      </div>
+    </div>
+  </div>
+</section>

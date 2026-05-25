@@ -1,0 +1,29 @@
+---
+const categories = [
+  { name: "Books", emoji: "📚" },
+  { name: "Playlists", emoji: "🎧" },
+  { name: "Journal Prompts", emoji: "✍️" },
+  { name: "Films", emoji: "🎬" },
+  { name: "Scents", emoji: "🕯️" }
+];
+---
+
+<section id="little-things" class="container-soft py-section">
+  <h2 class="section-title">Little Things That Help</h2>
+  <p class="section-subtitle">
+    Soft recommendations for hard seasons. Things that comfort, heal, and inspire.
+  </p>
+
+  <div class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+    {categories.map((cat, i) => (
+      <a href="#" class={`card p-6 text-center group cursor-pointer animate-slide-up stagger-${i + 1}`}>
+        <span class="text-4xl md:text-5xl block mb-3 group-hover:scale-110 transition-transform duration-300 inline-block">
+          {cat.emoji}
+        </span>
+        <span class="font-serif text-lg text-espresso group-hover:text-mauve transition-colors">
+          {cat.name}
+        </span>
+      </a>
+    ))}
+  </div>
+</section>
