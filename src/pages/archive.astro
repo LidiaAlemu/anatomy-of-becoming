@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const posts = await Astro.glob('../content/blog/*.md');
+const archive = posts
+  .sort((a, b) => new Date(b.frontmatter.date || '').getTime() - new Date(a.frontmatter.date || '').getTime());
+---
+
+<BaseLayout
+  title="Archive — Anatomy of Becoming"
+  description="An archive of stories and reflections across every season of becoming."
+>
+  <section class="container-soft py-section max-w-4xl mx-auto">
+    <h1 class="font-serif text-display text-espresso mb-3 text-center">
+      <span class="handwriting text-5xl md:text-6xl block mb-2">archive</span>
+    </h1>
+    <p class="section-subtitle max-w-2xl mx-auto">
+      Every entry, gathered in one place.
+    </p>
+
+    <div class="mt-10 card p-8 md:p-10">
+      <ul class="space-y-5">
+        {archive.map((post) => (
+          <li class="pb-5 border-b border-softborder/50 last:border-0 last:pb-0">
+            <a href={`/thoughts/${post.frontmatter.slug}`} class="group block">
+              <p class="text-xs font-sans tracking-wider uppercase text-taupe/70 mb-1">
+                {post.frontmatter.date} {post.frontmatter.category ? `• ${post.frontmatter.category}` : ''}
+              </p>
+              <h2 class="font-serif text-2xl text-espresso group-hover:text-mauve transition-colors">
+                {post.frontmatter.title}
+              </h2>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

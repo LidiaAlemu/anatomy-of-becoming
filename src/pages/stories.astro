@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ThoughtCard from '../components/ThoughtCard.astro';
+
+const posts = await Astro.glob('../content/blog/*.md');
+const stories = posts
+  .sort((a, b) => new Date(b.frontmatter.date || '').getTime() - new Date(a.frontmatter.date || '').getTime());
+---
+
+<BaseLayout
+  title="Stories — Anatomy of Becoming"
+  description="Long-form reflections on healing, identity, womanhood, faith, grief, and transformation."
+>
+  <section class="container-soft py-section">
+    <h1 class="font-serif text-display text-espresso mb-3 text-center">
+      <span class="handwriting text-5xl md:text-6xl block mb-2">stories</span>
+    </h1>
+    <p class="section-subtitle max-w-2xl mx-auto">
+      Deeper narratives from the seasons that changed me.
+    </p>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10 mt-12">
+      {stories.map((post) => (
+        <ThoughtCard
+          title={post.frontmatter.title}
+          excerpt={post.frontmatter.excerpt}
+          slug={post.frontmatter.slug}
+          image={post.frontmatter.image}
+          category={post.frontmatter.category}
+          date={post.frontmatter.date}
+        />
+      ))}
+    </div>
+  </section>
+</BaseLayout>
