@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const cusdisAppId = "10d1bb87-b0b2-4431-9ee1-90a65bd646a8";
 const formspreeEndpoint = "https://formspree.io/f/xdajlrpe";
 
-import genres from '../data/genres.json';
+import genresData from '../data/genres.json';
 
 // Construct the base URL for the current page (used in Cusdis page-url)
 const baseUrl = Astro.url.origin + Astro.url.pathname;
@@ -57,14 +57,14 @@ const baseUrl = Astro.url.origin + Astro.url.pathname;
             <label class="block text-taupe text-sm font-sans mb-2">Emotional Category</label>
             <select name="category" required class="w-full px-5 py-3 rounded-soft bg-ivory border border-softborder text-espresso focus:outline-none focus:border-rose/50 font-sans text-sm">
               <option value="">Choose a category</option>
-              {genres.map(g => (
+              {genresData.genres.map(g => (
                 <option value={g}>{g}</option>
               ))}
             </select>
           </div>
           <div class="flex items-end gap-3">
             <label class="flex items-center gap-3 bg-ivory rounded-soft px-4 py-3 border border-softborder w-full cursor-pointer">
-              <input type="checkbox" name="anonymous" value="yes" checked class="accent-rose" />
+              <input type="checkbox" name="anonymous" value="yes" class="accent-rose" />
               <span class="text-sm text-espresso font-sans">Submit anonymously</span>
             </label>
           </div>

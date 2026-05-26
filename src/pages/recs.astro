@@ -1,8 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Fragment } from 'astro/components';
+import genresData from '../data/genres.json';
 
 const allRecs = await Astro.glob('../content/recs/*.md');
-import genres from '../data/genres.json';
+const genres = genresData.genres;
 ---
 
 <BaseLayout
@@ -38,7 +40,7 @@ import genres from '../data/genres.json';
     <!-- Cards Grid -->
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8" id="recs-grid">
       {allRecs.map(rec => (
-        <div class="rec-card card overflow-hidden" data-type={rec.frontmatter.type} data-genre={rec.frontmatter.genre}>
+        <div class="rec-card card overflow-hidden" data-type={rec.frontmatter.type} data-category={rec.frontmatter.category || 'Uncategorized'}>
           <div class="h-48 bg-blush/50 flex items-center justify-center overflow-hidden">
             {rec.frontmatter.image ? (
               <img src={rec.frontmatter.image} alt={rec.frontmatter.title} class="w-full h-full object-cover" />
@@ -50,7 +52,7 @@ import genres from '../data/genres.json';
           </div>
           <div class="p-6">
             <span class="text-xs font-sans tracking-widest uppercase text-rose font-medium">
-              {rec.frontmatter.type} · {rec.frontmatter.genre}
+              {rec.frontmatter.type} · {rec.frontmatter.category || 'Uncategorized'}
             </span>
             <h3 class="font-serif text-xl text-espresso mt-2 mb-1">{rec.frontmatter.title}</h3>
             <p class="text-taupe text-sm leading-relaxed mb-3">{rec.frontmatter.description}</p>
@@ -84,9 +86,9 @@ import genres from '../data/genres.json';
 
     cards.forEach(card => {
       const type = card.dataset.type;
-      const genre = card.dataset.genre;
+      const category = card.dataset.category;
       const typeMatch = activeType === 'all' || type === activeType;
-      const genreMatch = activeGenre === 'all' || genre === activeGenre;
+      const genreMatch = activeGenre === 'all' || category === activeGenre;
       card.style.display = typeMatch && genreMatch ? '' : 'none';
     });
   }

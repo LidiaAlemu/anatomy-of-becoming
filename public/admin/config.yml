@@ -18,11 +18,38 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Excerpt", name: "excerpt", widget: "text" }
-      - { label: "Category", name: "category", widget: "select", options: ["Healing", "Identity", "Med School Diaries", "Grief", "Faith", "Womanhood", "Love", "Becoming"] }
+      - { label: "Category", name: "category", widget: "select", options: ["Grief", "Healing", "Identity", "Love", "Faith", "Loneliness", "Becoming", "Silence", "Growth", "Hope", "Womanhood", "Medicine"] }
+      - { label: "Published Type", name: "type", widget: "select", options: ["Thought", "Story", "Essay"], required: false }
       - { label: "Date", name: "date", widget: "string" }
       - { label: "Slug", name: "slug", widget: "string" }
       - { label: "Featured Image", name: "image", widget: "image", required: false }
       - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "recs"
+    label: "Recommendations"
+    folder: "src/content/recs"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Type", name: "type", widget: "select", options: ["book", "playlist", "film", "podcast", "article"], required: true }
+      - { label: "Category", name: "category", widget: "select", options: ["Grief", "Healing", "Identity", "Love", "Faith", "Loneliness", "Becoming", "Silence", "Growth", "Hope", "Womanhood", "Medicine"], required: false }
+      - { label: "Description", name: "description", widget: "string" }
+      - { label: "Rating", name: "rating", widget: "number", min: 0, max: 10, step: 1 }
+      - { label: "Featured Image", name: "image", widget: "image", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "genres"
+    label: "Site Genres"
+    file: "src/data/genres.json"
+    fields:
+      - label: "Genres"
+        name: "genres"
+        widget: "list"
+        field:
+          label: "Genre"
+          name: "genre"
+          widget: "string"
 
   - name: "pages"
     label: "Pages"

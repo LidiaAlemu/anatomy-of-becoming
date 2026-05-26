@@ -1,14 +1,16 @@
-[
-  "grief",
-  "healing",
-  "identity",
-  "love",
-  "faith",
-  "loneliness",
-  "becoming",
-  "silence",
-  "growth",
-  "hope",
-  "womanhood",
-  "medicine"
-]
+{
+  "genres": [
+    "Grief",
+    "Healing",
+    "Identity",
+    "Love",
+    "Faith",
+    "Loneliness",
+    "Becoming",
+    "Silence",
+    "Growth",
+    "Hope",
+    "Womanhood",
+    "Medicine"
+  ]
+}

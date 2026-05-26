@@ -1,7 +1,7 @@
 ---
 title: "Calm Piano"
 type: "playlist"
-genre: "Wellness"
+category: "Healing"
 image: ""
 description: "Soothing piano pieces for quiet mornings."
 rating: 8
