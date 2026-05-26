@@ -1,8 +1,12 @@
 function getSiteUrl() {
-  return (process.env.URL || process.env.DEPLOY_PRIME_URL || "https://anatomy-of-becoming.netlify.app").replace(
+  return (process.env.SITE_URL || process.env.URL || process.env.DEPLOY_PRIME_URL || "https://anatomy-of-becoming.netlify.app").replace(
     /\/$/,
     ""
   );
+}
+
+function getRedirectUri(siteUrl) {
+  return (process.env.OAUTH_REDIRECT_URI || `${siteUrl}/callback`).replace(/\/$/, "");
 }
 
 function authResponseHtml(provider, message, content) {
@@ -49,7 +53,7 @@ exports.handler = async function (event) {
     };
   }
 
-  const redirectUri = `${getSiteUrl()}/callback`;
+  const redirectUri = getRedirectUri(getSiteUrl());
 
   try {
     const tokenResponse = await fetch("https://github.com/login/oauth/access_token", {

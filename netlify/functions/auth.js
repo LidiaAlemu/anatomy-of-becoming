@@ -1,12 +1,16 @@
 function getSiteUrl() {
-  return (process.env.URL || process.env.DEPLOY_PRIME_URL || "https://anatomy-of-becoming.netlify.app").replace(
+  return (process.env.SITE_URL || process.env.URL || process.env.DEPLOY_PRIME_URL || "https://anatomy-of-becoming.netlify.app").replace(
     /\/$/,
     ""
   );
 }
 
+function getRedirectUri(siteUrl) {
+  return (process.env.OAUTH_REDIRECT_URI || `${siteUrl}/callback`).replace(/\/$/, "");
+}
+
 function buildAuthorizeUrl(clientId, siteUrl) {
-  const redirectUri = `${siteUrl}/callback`;
+  const redirectUri = getRedirectUri(siteUrl);
   const params = new URLSearchParams({
     client_id: clientId,
     scope: "repo user",
