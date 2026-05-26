@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import genresData from '../../data/genres.json';
+
+const posts = await Astro.glob('../../content/blog/*.md');
+
+function monthLabel(dateString) {
+  if (!dateString) return 'Unknown date';
+  const parsed = new Date(`${dateString} 1`);
+  if (Number.isNaN(parsed.getTime())) return dateString;
+  return parsed.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+}
+
+const archive = posts
+  .map((post) => ({
+    ...post,
+    category: post.frontmatter.category || 'Unlabeled',
+    type: post.frontmatter.type || 'Thoughts',
+    month: monthLabel(post.frontmatter.date),
+  }))
+  .sort((a, b) => new Date(b.frontmatter.date || '').getTime() - new Date(a.frontmatter.date || '').getTime());
+
+const categories = genresData.genres;
+const months = [...new Set(archive.map(p => p.month))].filter(Boolean);
+---
+
+<BaseLayout title="Archive List — Anatomy of Becoming" description="Browse the archive by category and date">
+  <section class="container-soft py-section max-w-6xl mx-auto">
+    <div class="text-center mb-8">
+      <h1 class="font-serif text-3xl text-espresso mb-2">Full Archive</h1>
+      <p class="text-taupe text-sm">Filter by category and date to find what you need.</p>
+    </div>
+
+    <div class="flex flex-wrap gap-4 items-center justify-center mb-8">
+      <select id="filter-category" class="px-4 py-2 rounded-soft border border-softborder bg-ivory text-espresso">
+        <option value="all">All Categories</option>
+        {categories.map(c => (
+          <option value={c}>{c}</option>
+        ))}
+      </select>
+
+      <select id="filter-month" class="px-4 py-2 rounded-soft border border-softborder bg-ivory text-espresso">
+        <option value="all">All Dates</option>
+        {months.map(m => (
+          <option value={m}>{m}</option>
+        ))}
+      </select>
+    </div>
+
+    <div id="archive-list" class="grid md:grid-cols-2 gap-6">
+      {archive.map(item => (
+        <article class="card p-6 border transition hover:-translate-y-1" data-category={item.category} data-month={item.month}>
+          <a href={`/thoughts/${item.frontmatter.slug}`} class="group block">
+            <p class="text-xs uppercase text-taupe/70 mb-2">{item.category} · {item.type}</p>
+            <h3 class="font-serif text-xl group-hover:text-rose transition-colors">{item.frontmatter.title}</h3>
+            <p class="text-sm text-taupe mt-2">{item.frontmatter.excerpt}</p>
+            <p class="text-xs text-taupe mt-3">{item.frontmatter.date}</p>
+          </a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <script>
+    const categorySelect = document.getElementById('filter-category');
+    const monthSelect = document.getElementById('filter-month');
+    const list = document.getElementById('archive-list');
+
+    function filter() {
+      const cat = categorySelect.value;
+      const mon = monthSelect.value;
+      list.querySelectorAll('article').forEach(a => {
+        const matchCat = cat === 'all' || a.dataset.category === cat;
+        const matchMon = mon === 'all' || a.dataset.month === mon;
+        a.style.display = (matchCat && matchMon) ? '' : 'none';
+      });
+    }
+
+    categorySelect.addEventListener('change', filter);
+    monthSelect.addEventListener('change', filter);
+
+    // apply initial filters from URL
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('category')) categorySelect.value = params.get('category');
+    if (params.get('month')) monthSelect.value = params.get('month');
+    filter();
+  </script>
+</BaseLayout>
