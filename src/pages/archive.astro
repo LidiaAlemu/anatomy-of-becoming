@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const posts = await Astro.glob('../content/blog/*.md');
 import genresData from '../data/genres.json';
+import archivePage from '../content/pages/archive.md';
 const archive = posts
   .map((post) => ({
     ...post,
@@ -42,16 +43,16 @@ function monthLabel(dateString) {
         <span class="handwriting text-5xl md:text-6xl block mb-2">archive</span>
       </h1>
       <p class="section-subtitle max-w-2xl mx-auto">
-        A place where broken pieces learn to speak again, and where every remembered moment becomes a seed of healing and growth.
+        {archivePage.frontmatter.subtitle || 'A place where broken pieces learn to speak again, and where every remembered moment becomes a seed of healing and growth.'}
       </p>
     </div>
 
     <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] mb-12">
       <div class="card p-8 md:p-10">
-        <h2 class="font-serif text-2xl text-espresso mb-4">What is archive</h2>
-        <p class="text-base text-espresso/85 leading-relaxed mb-4">
-          I planned for the archive to be a tender space where the fragments of myself are gathered. It holds the weight of loneliness and the light of faith, the ache of memory and the pulse of growth. It is a collection of what matters and the place where I can see how my journey is being shaped forward.
-        </p>
+        <h2 class="font-serif text-2xl text-espresso mb-4">{archivePage.frontmatter.title || 'What is archive'}</h2>
+        <div class="text-base text-espresso/85 leading-relaxed mb-4 prose-soft">
+          <div set:html={archivePage.compiledContent()} />
+        </div>
         <ul class="space-y-3 text-sm text-taupe leading-relaxed">
           <li>• Depth that grows with every entry.</li>
           <li>• Continuity across seasons of thought.</li>
@@ -101,7 +102,7 @@ function monthLabel(dateString) {
           </div>
 
           <div class="space-y-6">
-            {groupedByMonth[month].map((post) => (
+            {groupedByMonth[month].slice(0,2).map((post) => (
               <div class="card p-6 md:p-8 border border-softborder/70 transition hover:-translate-y-1 hover:border-rose/30">
                 <a href={`/thoughts/${post.frontmatter.slug}`} class="group block">
                   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -119,6 +120,12 @@ function monthLabel(dateString) {
                 </a>
               </div>
             ))}
+
+            {groupedByMonth[month].length > 2 && (
+              <div class="text-center mt-4">
+                <a href={`/archive/list?month=${encodeURIComponent(month)}`} class="btn-secondary">Read more</a>
+              </div>
+            )}
           </div>
         </section>
       ))}
