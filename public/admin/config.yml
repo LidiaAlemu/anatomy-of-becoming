@@ -4,6 +4,7 @@ backend:
   branch: main
   base_url: https://anatomy-of-becoming.netlify.app
   auth_endpoint: auth
+  site_domain: anatomy-of-becoming.netlify.app
 
 media_folder: "public/images/uploads"
 public_folder: "/images/uploads"
