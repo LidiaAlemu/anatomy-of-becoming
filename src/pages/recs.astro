@@ -1,7 +1,25 @@
----
+﻿---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import recsFilters from '../data/recsFilters.json';
 
 const allRecs = await Astro.glob('../content/recs/*.md');
+const typeEntries = Object.entries(recsFilters.types).filter(([key]) => key !== 'all');
+const typeCards = typeEntries.map(([key, config]) => {
+  const items = allRecs
+    .filter((rec) => (rec.frontmatter.type || '').toLowerCase() === key)
+    .map((rec) => ({
+      ...rec,
+      dateValue: new Date(rec.frontmatter.date || '1970-01-01').getTime(),
+    }))
+    .sort((a, b) => b.dateValue - a.dateValue);
+
+  return {
+    key,
+    ...config,
+    count: items.length,
+    preview: items.slice(0, 3),
+  };
+});
 ---
 
 <BaseLayout
@@ -9,118 +27,140 @@ const allRecs = await Astro.glob('../content/recs/*.md');
   description="Books, movies, podcasts, quotes, and articles that comfort, heal, and inspire."
 >
   <section class="container-soft py-section max-w-6xl mx-auto">
-    <h1 class="font-serif text-display text-espresso mb-4 text-center">
-      <span class="handwriting text-5xl md:text-6xl block mb-2">Little Things That Help</span>
-    </h1>
-    <p class="section-subtitle">Soft recommendations for hard seasons.</p>
-
-    {allRecs.length === 0 && (
-      <p class="text-center text-taupe">No recommendations yet. Add some through the CMS!</p>
-    )}
-
-    <!-- Filter Controls -->
-    <div class="flex flex-wrap justify-center gap-4 mb-10">
-      <button class="btn-filter active" data-type="all">All</button>
-      <button class="btn-filter" data-type="book">Books</button>
-      <button class="btn-filter" data-type="movie">Movies</button>
-      <button class="btn-filter" data-type="podcast">Podcasts</button>
-      <button class="btn-filter" data-type="quote">Quotes</button>
-      <button class="btn-filter" data-type="article">Articles</button>
+    <div class="text-center mb-8">
+      <h1 class="font-serif text-display text-espresso mb-4">
+        <span class="handwriting text-5xl md:text-6xl block mb-2">Little Things That Help</span>
+      </h1>
+      <p class="section-subtitle">Choose a recommendation category and click see more to explore genre filters.</p>
     </div>
 
-    <!-- Cards Grid -->
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8" id="recs-grid">
-      {allRecs.map(rec => (
-        <div class="rec-card card overflow-hidden" data-type={rec.frontmatter.type} data-category={rec.frontmatter.category || 'Uncategorized'}>
-          <div class="h-48 bg-blush/50 flex items-center justify-center overflow-hidden">
-            {rec.frontmatter.image ? (
-              <img src={rec.frontmatter.image} alt={rec.frontmatter.title} class="w-full h-full object-cover" />
-            ) : (
-              <span class="text-4xl">
-                {rec.frontmatter.type === 'book' ? '📖'
-                  : rec.frontmatter.type === 'playlist' ? '🎧'
-                  : (rec.frontmatter.type === 'film' || rec.frontmatter.type === 'movie') ? '🎬'
-                  : rec.frontmatter.type === 'podcast' ? '🎙️'
-                  : rec.frontmatter.type === 'quote' ? '💬'
-                  : rec.frontmatter.type === 'article' ? '📝'
-                  : '🔖'}
-              </span>
+    <div class="grid md:grid-cols-3 gap-8">
+      {typeCards.map((card) => (
+        <article class="type-card group">
+          <div class="preview-stack" aria-hidden="true">
+            {card.preview.length ? card.preview.map((rec, index) => (
+              <div class="preview-layer" style={`--layer-index: ${index}`}>
+                <span>{rec.frontmatter.title}</span>
+              </div>
+            )) : (
+              <div class="preview-layer empty-layer">
+                <span>Placeholder ready</span>
+              </div>
             )}
           </div>
-          <div class="p-6">
-            <span class="text-xs font-sans tracking-widest uppercase text-rose font-medium">
-              {rec.frontmatter.type} · {rec.frontmatter.category || 'Uncategorized'}
-            </span>
-            <h3 class="font-serif text-xl text-espresso mt-2 mb-1">{rec.frontmatter.title}</h3>
-            <p class="text-taupe text-sm leading-relaxed mb-3">{rec.frontmatter.description}</p>
-            <div class="flex items-center gap-2 mb-2">
-              <span class="text-xs text-taupe font-sans">Rating:</span>
-              <div class="flex gap-0.5 text-amber-500">
-                {Array.from({ length: 5 }, (_, i) => (
-                  <span>{i < Math.round(rec.frontmatter.rating / 2) ? '★' : '☆'}</span>
-                ))}
-              </div>
-              <span class="text-xs text-taupe font-sans">{rec.frontmatter.rating}/10</span>
-            </div>
-            <div class="prose-soft text-sm mt-4">
-              <div set:html={rec.compiledContent()} />
-            </div>
+
+          <div class="type-card-content">
+            <h2 class="font-serif text-2xl text-espresso mb-2">{card.label}</h2>
+            <p class="text-sm text-taupe mb-4">
+              {card.count > 0
+                ? `${card.count} recommendation${card.count === 1 ? '' : 's'} available.`
+                : 'No recommendations yet. Add items in /src/content/recs to populate this section.'}
+            </p>
+            <p class="text-sm text-taupe mb-6">
+              {card.label === 'Books' || card.label === 'Movies'
+                ? 'Browse by genre with newer favorites up front.'
+                : 'Open this section to add custom genre filters in recsFilters.json.'}
+            </p>
+            <a href={card.path} class="btn-secondary btn-large">See more</a>
           </div>
-        </div>
+        </article>
       ))}
+    </div>
+
+    <div class="mt-12 rounded-soft border border-softborder bg-ivory p-8">
+      <h2 class="font-serif text-2xl text-espresso mb-3">Admin filter controls</h2>
+      <p class="text-sm text-taupe mb-3">Update every recommendation section by editing <code>src/data/recsFilters.json</code>. Add or remove genre filters for each type, including podcasts, quotes, and articles.</p>
+      <pre class="rounded-md bg-white p-4 text-xs overflow-x-auto border border-softborder">{
+  "types": {
+    "book": { "genres": ["All", "Romance", "Fantasy", "Romantasy", "Thriller"] },
+    "movie": { "genres": ["All", "Romance", "Fantasy", "Thriller", "Drama"] },
+    "podcast": { "genres": ["All"] },
+    "quote": { "genres": ["All"] },
+    "article": { "genres": ["All"] }
+  }
+}</pre>
     </div>
   </section>
 </BaseLayout>
 
-<script>
-  const filterButtons = document.querySelectorAll('.btn-filter');
-  const cards = document.querySelectorAll('.rec-card');
-
-  function normalizeType(type) {
-    if (!type) return type;
-    return type.toLowerCase() === 'film' ? 'movie' : type.toLowerCase();
-  }
-
-  function filterCards() {
-    const activeType = document.querySelector('.btn-filter.active')?.dataset.type || 'all';
-
-    cards.forEach(card => {
-      const type = normalizeType(card.dataset.type);
-      const typeMatch = activeType === 'all' || type === activeType;
-      card.style.display = typeMatch ? '' : 'none';
-    });
-  }
-
-  filterButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      filterCards();
-    });
-  });
-</script>
-
 <style>
-  .btn-filter {
-    padding: 0.5rem 1.5rem;
-    border-radius: 2rem;
-    border: 1px solid #DCCFCB;
-    background: transparent;
-    color: #4A3734;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 500;
+  .type-card {
+    position: relative;
+    border: 1px solid #E6DFDB;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    background: #fff;
+    padding: 1.5rem;
+    min-height: 18rem;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .type-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(44, 28, 24, 0.12);
+  }
+
+  .preview-stack {
+    position: relative;
+    min-height: 5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .preview-layer {
+    position: absolute;
+    top: calc(var(--layer-index) * 0.8rem);
+    left: calc(var(--layer-index) * 0.8rem);
+    width: calc(100% - var(--layer-index) * 1.6rem);
+    height: 4rem;
+    padding: 0.8rem 1rem;
+    border-radius: 1rem;
+    background: #f8efeb;
+    border: 1px solid #dccfcf;
+    display: flex;
+    align-items: center;
+    color: #5d4037;
+    font-size: 0.95rem;
+    z-index: calc(10 - var(--layer-index));
+  }
+
+  .preview-layer.empty-layer {
+    position: static;
+    width: 100%;
+    background: #f3f0ed;
+    border-style: dashed;
+  }
+
+  .preview-layer:nth-child(1) { background: #f7eeeb; }
+  .preview-layer:nth-child(2) { background: #f3e4df; }
+  .preview-layer:nth-child(3) { background: #efd8d1; }
+
+  .type-card-content {
+    position: relative;
+    z-index: 20;
+  }
+
+  .btn-secondary.btn-large {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.95rem 1.6rem;
+    border-radius: 9999px;
     text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    background: #6d5350;
+    color: #f7f2ef;
+    font-weight: 600;
+    transition: transform 0.2s ease, background 0.2s ease;
+    text-decoration: none;
   }
-  .btn-filter:hover {
-    background: #C9A7A0;
-    color: #F7F2EF;
+
+  .btn-secondary.btn-large:hover {
+    transform: translateY(-1px);
+    background: #553f3c;
   }
-  .btn-filter.active {
-    background: #6D5350;
-    color: #F7F2EF;
-    border-color: #6D5350;
+
+  pre {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 </style>

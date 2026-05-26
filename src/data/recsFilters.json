@@ -1,0 +1,54 @@
+{
+  "types": {
+    "all": {
+      "label": "All",
+      "path": "/recs",
+      "genres": []
+    },
+    "book": {
+      "label": "Books",
+      "path": "/recs/books",
+      "genres": [
+        "All",
+        "Romance",
+        "Fantasy",
+        "Romantasy",
+        "Thriller",
+        "Memoir"
+      ]
+    },
+    "movie": {
+      "label": "Movies",
+      "path": "/recs/movies",
+      "genres": [
+        "All",
+        "Romance",
+        "Fantasy",
+        "Thriller",
+        "Drama",
+        "Documentary"
+      ]
+    },
+    "podcast": {
+      "label": "Podcasts",
+      "path": "/recs/podcasts",
+      "genres": [
+        "All"
+      ]
+    },
+    "quote": {
+      "label": "Quotes",
+      "path": "/recs/quotes",
+      "genres": [
+        "All"
+      ]
+    },
+    "article": {
+      "label": "Articles",
+      "path": "/recs/articles",
+      "genres": [
+        "All"
+      ]
+    }
+  }
+}
