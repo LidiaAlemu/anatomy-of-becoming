@@ -1,14 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import genresData from '../data/genres.json';
 
 const allRecs = await Astro.glob('../content/recs/*.md');
-const genres = genresData.genres;
 ---
 
 <BaseLayout
   title="Recommendations — Anatomy of Becoming"
-  description="Books, playlists, films, and podcasts that comfort, heal, and inspire."
+  description="Books, movies, podcasts, quotes, and articles that comfort, heal, and inspire."
 >
   <section class="container-soft py-section max-w-6xl mx-auto">
     <h1 class="font-serif text-display text-espresso mb-4 text-center">
@@ -24,16 +22,10 @@ const genres = genresData.genres;
     <div class="flex flex-wrap justify-center gap-4 mb-10">
       <button class="btn-filter active" data-type="all">All</button>
       <button class="btn-filter" data-type="book">Books</button>
-      <button class="btn-filter" data-type="playlist">Playlists</button>
-      <button class="btn-filter" data-type="film">Films</button>
+      <button class="btn-filter" data-type="movie">Movies</button>
       <button class="btn-filter" data-type="podcast">Podcasts</button>
-
-      <select id="genre-filter" class="px-4 py-2 rounded-soft border border-softborder bg-ivory text-espresso font-sans text-sm">
-        <option value="all">All Genres</option>
-        {genres.map(genre => (
-          <option value={genre}>{genre}</option>
-        ))}
-      </select>
+      <button class="btn-filter" data-type="quote">Quotes</button>
+      <button class="btn-filter" data-type="article">Articles</button>
     </div>
 
     <!-- Cards Grid -->
@@ -45,7 +37,13 @@ const genres = genresData.genres;
               <img src={rec.frontmatter.image} alt={rec.frontmatter.title} class="w-full h-full object-cover" />
             ) : (
               <span class="text-4xl">
-                {rec.frontmatter.type === 'book' ? '📖' : rec.frontmatter.type === 'playlist' ? '🎧' : rec.frontmatter.type === 'film' ? '🎬' : '🎙️'}
+                {rec.frontmatter.type === 'book' ? '📖'
+                  : rec.frontmatter.type === 'playlist' ? '🎧'
+                  : (rec.frontmatter.type === 'film' || rec.frontmatter.type === 'movie') ? '🎬'
+                  : rec.frontmatter.type === 'podcast' ? '🎙️'
+                  : rec.frontmatter.type === 'quote' ? '💬'
+                  : rec.frontmatter.type === 'article' ? '📝'
+                  : '🔖'}
               </span>
             )}
           </div>
@@ -76,19 +74,20 @@ const genres = genresData.genres;
 
 <script>
   const filterButtons = document.querySelectorAll('.btn-filter');
-  const genreSelect = document.getElementById('genre-filter');
   const cards = document.querySelectorAll('.rec-card');
+
+  function normalizeType(type) {
+    if (!type) return type;
+    return type.toLowerCase() === 'film' ? 'movie' : type.toLowerCase();
+  }
 
   function filterCards() {
     const activeType = document.querySelector('.btn-filter.active')?.dataset.type || 'all';
-    const activeGenre = genreSelect.value;
 
     cards.forEach(card => {
-      const type = card.dataset.type;
-      const category = card.dataset.category;
+      const type = normalizeType(card.dataset.type);
       const typeMatch = activeType === 'all' || type === activeType;
-      const genreMatch = activeGenre === 'all' || category === activeGenre;
-      card.style.display = typeMatch && genreMatch ? '' : 'none';
+      card.style.display = typeMatch ? '' : 'none';
     });
   }
 
@@ -99,8 +98,6 @@ const genres = genresData.genres;
       filterCards();
     });
   });
-
-  genreSelect.addEventListener('change', filterCards);
 </script>
 
 <style>
