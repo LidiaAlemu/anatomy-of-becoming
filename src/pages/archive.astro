@@ -3,36 +3,124 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 const posts = await Astro.glob('../content/blog/*.md');
 const archive = posts
-  .sort((a, b) => new Date(b.frontmatter.date || '').getTime() - new Date(a.frontmatter.date || '').getTime());
+  .map((post) => ({
+    ...post,
+    category: post.frontmatter.category || 'Unlabeled',
+    type: post.frontmatter.type || 'Thoughts',
+    dateValue: new Date(`${post.frontmatter.date || ''} 1`)
+  }))
+  .sort((a, b) => b.dateValue.getTime() - a.dateValue.getTime());
+
+const categories = [...new Set(archive.map((post) => post.category))].sort();
+const types = [...new Set(archive.map((post) => post.type))].sort();
+const monthKeys = [...new Set(archive.map((post) => monthLabel(post.frontmatter.date)))]
+  .filter(Boolean);
+
+const groupedByMonth = archive.reduce((acc, post) => {
+  const month = monthLabel(post.frontmatter.date);
+  if (!acc[month]) acc[month] = [];
+  acc[month].push(post);
+  return acc;
+}, {});
+
+function monthLabel(dateString) {
+  if (!dateString) return 'Unknown date';
+  const parsed = new Date(`${dateString} 1`);
+  if (Number.isNaN(parsed.getTime())) return dateString;
+  return parsed.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+}
 ---
 
 <BaseLayout
   title="Archive — Anatomy of Becoming"
-  description="An archive of stories and reflections across every season of becoming."
+  description="A living archive of stories, reflections, and the emotional seasons that shaped them."
 >
-  <section class="container-soft py-section max-w-4xl mx-auto">
-    <h1 class="font-serif text-display text-espresso mb-3 text-center">
-      <span class="handwriting text-5xl md:text-6xl block mb-2">archive</span>
-    </h1>
-    <p class="section-subtitle max-w-2xl mx-auto">
-      Every entry, gathered in one place.
-    </p>
+  <section class="container-soft py-section max-w-5xl mx-auto">
+    <div class="text-center mb-12">
+      <h1 class="font-serif text-display text-espresso mb-3">
+        <span class="handwriting text-5xl md:text-6xl block mb-2">archive</span>
+      </h1>
+      <p class="section-subtitle max-w-2xl mx-auto">
+        A living emotional collection, not a list of one-off posts. This archive makes the work feel fuller, quieter, and more intentional.
+      </p>
+    </div>
 
-    <div class="mt-10 card p-8 md:p-10">
-      <ul class="space-y-5">
-        {archive.map((post) => (
-          <li class="pb-5 border-b border-softborder/50 last:border-0 last:pb-0">
-            <a href={`/thoughts/${post.frontmatter.slug}`} class="group block">
-              <p class="text-xs font-sans tracking-wider uppercase text-taupe/70 mb-1">
-                {post.frontmatter.date} {post.frontmatter.category ? `• ${post.frontmatter.category}` : ''}
-              </p>
-              <h2 class="font-serif text-2xl text-espresso group-hover:text-mauve transition-colors">
-                {post.frontmatter.title}
-              </h2>
-            </a>
-          </li>
-        ))}
-      </ul>
+    <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] mb-12">
+      <div class="card p-8 md:p-10">
+        <h2 class="font-serif text-2xl text-espresso mb-4">Why archive matters</h2>
+        <p class="text-base text-espresso/85 leading-relaxed mb-4">
+          Without archive, content can feel temporary or random. With it, this site becomes a slow, layered emotional journal — one that holds the grief, healing, identity shifts, love, and quiet becoming that still matters.
+        </p>
+        <ul class="space-y-3 text-sm text-taupe leading-relaxed">
+          <li>• Depth that grows with every entry.</li>
+          <li>• Continuity across seasons of thought.</li>
+          <li>• A more intentional literary identity.</li>
+        </ul>
+      </div>
+
+      <div class="space-y-8">
+        <div class="card p-6 md:p-8">
+          <h3 class="font-serif text-xl text-espresso mb-3">Browse by category</h3>
+          <div class="flex flex-wrap gap-3">
+            {categories.map((category) => (
+              <span class="px-4 py-2 rounded-full bg-rose/10 text-rose text-xs uppercase tracking-[0.25em] font-sans">{category}</span>
+            ))}
+          </div>
+        </div>
+
+        <div class="card p-6 md:p-8">
+          <h3 class="font-serif text-xl text-espresso mb-3">By date</h3>
+          <div class="space-y-2 text-sm text-taupe leading-relaxed">
+            {monthKeys.map((month) => (
+              <div>{month}</div>
+            ))}
+          </div>
+        </div>
+
+        <div class="card p-6 md:p-8">
+          <h3 class="font-serif text-xl text-espresso mb-3">By type</h3>
+          <div class="flex flex-wrap gap-3">
+            {types.map((type) => (
+              <span class="px-4 py-2 rounded-full bg-espresso/5 text-espresso text-xs uppercase tracking-[0.25em] font-sans">{type}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-y-12">
+      {monthKeys.map((month) => (
+        <section>
+          <div class="flex items-center justify-between mb-6 gap-4">
+            <div>
+              <h2 class="font-serif text-3xl text-espresso">{month}</h2>
+              <p class="text-sm text-taupe/70">A quiet season from the archive.</p>
+            </div>
+            <span class="text-xs uppercase tracking-[0.3em] text-taupe font-sans">{groupedByMonth[month]?.length ?? 0} entries</span>
+          </div>
+
+          <div class="space-y-6">
+            {groupedByMonth[month].map((post) => (
+              <div class="card p-6 md:p-8 border border-softborder/70 transition hover:-translate-y-1 hover:border-rose/30">
+                <a href={`/thoughts/${post.frontmatter.slug}`} class="group block">
+                  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                      <p class="text-xs font-sans tracking-[0.25em] uppercase text-taupe/70 mb-2">
+                        {post.category} • {post.type}
+                      </p>
+                      <h3 class="font-serif text-2xl text-espresso group-hover:text-rose transition-colors">
+                        {post.frontmatter.title}
+                      </h3>
+                    </div>
+                    <span class="text-sm text-taupe">{post.frontmatter.date}</span>
+                  </div>
+                  <p class="text-taupe mt-4 leading-relaxed">{post.frontmatter.excerpt}</p>
+                </a>
+              </div>
+            ))}
+          </div>
+        </section>
+      ))}
     </div>
   </section>
 </BaseLayout>
