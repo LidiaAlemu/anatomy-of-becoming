@@ -1,26 +1,31 @@
-<header class="container-soft py-6 flex items-center justify-between border-b border-softborder/50 relative">
-  <!-- Left Navigation (desktop) -->
-  <nav class="hidden lg:flex items-center gap-8">
+---
+import Logo from "./Logo.astro";
+---
+
+<header class="container-soft py-5 lg:py-6 flex items-center justify-between border-b border-softborder/50 relative gap-4 lg:gap-6">
+  <!-- Wordmark logo (homepage link) -->
+  <a
+    href="/"
+    class="group shrink-0 text-espresso transition-opacity duration-300 ease-in-out hover:opacity-70 focus-visible:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose/40 focus-visible:ring-offset-2 focus-visible:ring-offset-ivory rounded-sm mr-6 sm:mr-8 lg:mr-12 xl:mr-14"
+    aria-label="Anatomy of Becoming — home"
+  >
+    <span class="block h-8 w-auto sm:h-9 md:h-10 lg:h-12 xl:h-14">
+      <Logo class="h-full w-auto" />
+    </span>
+  </a>
+
+  <!-- Left navigation (desktop) -->
+  <nav class="hidden lg:flex items-center gap-6 xl:gap-8 shrink-0" aria-label="Primary">
     <a href="/" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">Home</a>
     <a href="/about" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">About</a>
     <a href="/#thoughts" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">Thoughts</a>
     <a href="/#med-school" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">Med School Diaries</a>
   </nav>
 
-  <!-- Center Logo -->
-  <div class="text-center mx-auto lg:mx-0">
-    <a href="/" class="block group">
-      <h1 class="handwriting text-3xl md:text-4xl text-rose group-hover:text-mauve transition-colors leading-tight">
-        anatomy of becoming
-      </h1>
-      <p class="handwriting text-sm md:text-base leading-none -mt-1 text-taupe/70">
-        thoughts i never said
-      </p>
-    </a>
-  </div>
+  <div class="hidden lg:block flex-1 min-w-6" aria-hidden="true"></div>
 
-  <!-- Right Navigation (desktop) -->
-  <nav class="hidden lg:flex items-center gap-8">
+  <!-- Right navigation (desktop) -->
+  <nav class="hidden lg:flex items-center gap-6 xl:gap-8 shrink-0" aria-label="Secondary">
     <a href="/weekly-notes" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">Weekly Notes</a>
     <a href="/shared-thoughts" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">Shared Thoughts</a>
     <a href="/recs" class="text-espresso/80 hover:text-espresso font-sans text-sm tracking-wide uppercase font-medium">Recs</a>
@@ -28,14 +33,14 @@
   </nav>
 
   <!-- Search icon (desktop) -->
-  <div class="hidden lg:flex items-center ml-4">
+  <div class="hidden lg:flex items-center shrink-0">
     <button aria-label="Search" class="text-taupe hover:text-rose transition-colors">
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
     </button>
   </div>
 
-  <!-- Mobile hamburger button -->
-  <button id="menu-toggle" class="lg:hidden text-espresso p-2 z-50" aria-label="Menu">
+  <!-- Mobile hamburger -->
+  <button id="menu-toggle" class="lg:hidden text-espresso p-2 z-50 ml-auto" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <line x1="4" x2="20" y1="12" y2="12"/>
       <line x1="4" x2="20" y1="6" y2="6"/>
@@ -44,7 +49,7 @@
   </button>
 
   <!-- Mobile menu overlay -->
-  <div id="mobile-menu" class="hidden fixed inset-0 bg-ivory/95 backdrop-blur-sm z-40 flex flex-col items-center justify-center gap-8 text-xl font-serif text-espresso">
+  <div id="mobile-menu" class="hidden fixed inset-0 bg-ivory/95 backdrop-blur-sm z-40 flex flex-col items-center justify-center gap-8 text-xl font-serif text-espresso" role="dialog" aria-modal="true" aria-label="Site menu">
     <a href="/" class="hover:text-rose transition-colors">Home</a>
     <a href="/about" class="hover:text-rose transition-colors">About</a>
     <a href="/#thoughts" class="hover:text-rose transition-colors">Thoughts</a>
@@ -57,22 +62,24 @@
 </header>
 
 <script>
-  const menuToggle = document.getElementById('menu-toggle');
-  const menuClose = document.getElementById('menu-close');
-  const mobileMenu = document.getElementById('mobile-menu');
+  const menuToggle = document.getElementById("menu-toggle");
+  const menuClose = document.getElementById("menu-close");
+  const mobileMenu = document.getElementById("mobile-menu");
 
-  menuToggle.addEventListener('click', () => {
-    mobileMenu.classList.remove('hidden');
+  menuToggle?.addEventListener("click", () => {
+    mobileMenu?.classList.remove("hidden");
+    menuToggle?.setAttribute("aria-expanded", "true");
   });
 
-  menuClose.addEventListener('click', () => {
-    mobileMenu.classList.add('hidden');
+  menuClose?.addEventListener("click", () => {
+    mobileMenu?.classList.add("hidden");
+    menuToggle?.setAttribute("aria-expanded", "false");
   });
 
-  // Close menu when a link is clicked
-  mobileMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      mobileMenu.classList.add('hidden');
+  mobileMenu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      mobileMenu?.classList.add("hidden");
+      menuToggle?.setAttribute("aria-expanded", "false");
     });
   });
 </script>

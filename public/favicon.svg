@@ -1,10 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#C9A7A0;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#4A3734;stop-opacity:1" />
-    </linearGradient>
-  </defs>
-  <circle cx="50" cy="50" r="45" fill="url(#grad)" />
-  <text x="50" y="62" text-anchor="middle" font-family="serif" font-size="32" font-weight="400" fill="#F7F2EF" letter-spacing="2">aob</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" role="img" aria-label="Anatomy of Becoming">
+  <rect width="32" height="32" rx="7" fill="#F7F2EF"/>
+  <text
+    x="16"
+    y="23"
+    text-anchor="middle"
+    fill="#4A3734"
+    style="font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; font-weight: 600; font-size: 20px;"
+  >
+    A
+  </text>
 </svg>

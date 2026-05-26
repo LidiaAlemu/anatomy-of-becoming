@@ -1,0 +1,26 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = "" } = Astro.props;
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 520 56"
+  fill="none"
+  role="img"
+  aria-hidden="true"
+  class:list={["block h-full w-auto max-w-none", className]}
+>
+  <text
+    x="260"
+    y="44"
+    text-anchor="middle"
+    fill="currentColor"
+    style="font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif; font-style: italic; font-weight: 500; font-size: 42px; letter-spacing: 0.03em;"
+  >
+    Anatomy of Becoming
+  </text>
+</svg>
