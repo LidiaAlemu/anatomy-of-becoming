@@ -1,5 +1,5 @@
 function getSiteUrl() {
-  return (process.env.URL || process.env.DEPLOY_PRIME_URL || "https://anatomyofbecoming.netlify.app").replace(
+  return (process.env.URL || process.env.DEPLOY_PRIME_URL || "https://anatomy-of-becoming.netlify.app").replace(
     /\/$/,
     ""
   );

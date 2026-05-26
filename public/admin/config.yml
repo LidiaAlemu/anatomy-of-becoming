@@ -2,7 +2,7 @@ backend:
   name: github
   repo: LidiaAlemu/anatomy-of-becoming
   branch: main
-  base_url: https://anatomyofbecoming.netlify.app
+  base_url: https://anatomy-of-becoming.netlify.app
   auth_endpoint: auth
 
 media_folder: "public/images/uploads"
