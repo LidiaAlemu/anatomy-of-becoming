@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { Fragment } from 'astro/components';
 import genresData from '../data/genres.json';
 
 const allRecs = await Astro.glob('../content/recs/*.md');
@@ -66,7 +65,7 @@ const genres = genresData.genres;
               <span class="text-xs text-taupe font-sans">{rec.frontmatter.rating}/10</span>
             </div>
             <div class="prose-soft text-sm mt-4">
-              <Fragment set:html={rec.compiledContent()} />
+              <div set:html={rec.compiledContent()} />
             </div>
           </div>
         </div>
