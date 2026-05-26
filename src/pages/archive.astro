@@ -43,15 +43,15 @@ function monthLabel(dateString) {
         <span class="handwriting text-5xl md:text-6xl block mb-2">archive</span>
       </h1>
       <p class="section-subtitle max-w-2xl mx-auto">
-        {archivePage.frontmatter.subtitle || 'A place where broken pieces learn to speak again, and where every remembered moment becomes a seed of healing and growth.'}
+        {archivePage?.frontmatter?.subtitle || 'A place where broken pieces learn to speak again, and where every remembered moment becomes a seed of healing and growth.'}
       </p>
     </div>
 
     <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] mb-12">
       <div class="card p-8 md:p-10">
-        <h2 class="font-serif text-2xl text-espresso mb-4">{archivePage.frontmatter.title || 'What is archive'}</h2>
+        <h2 class="font-serif text-2xl text-espresso mb-4">{archivePage?.frontmatter?.title || 'What is archive'}</h2>
         <div class="text-base text-espresso/85 leading-relaxed mb-4 prose-soft">
-          <div set:html={archivePage.compiledContent()} />
+          {archivePage?.compiledContent ? <div set:html={archivePage.compiledContent()} /> : null}
         </div>
         <ul class="space-y-3 text-sm text-taupe leading-relaxed">
           <li>• Depth that grows with every entry.</li>
