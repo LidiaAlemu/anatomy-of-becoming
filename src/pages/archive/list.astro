@@ -12,16 +12,38 @@ function monthLabel(dateString) {
 }
 
 const archive = posts
-  .map((post) => ({
-    ...post,
-    category: post.frontmatter.category || 'Unlabeled',
-    type: post.frontmatter.type || 'Thoughts',
-    month: monthLabel(post.frontmatter.date),
-  }))
+  .map((post) => {
+    const date = new Date(post.frontmatter.date || '');
+    return {
+      ...post,
+      category: post.frontmatter.category || 'Unlabeled',
+      type: post.frontmatter.type || 'Thoughts',
+      month: date.toLocaleString('en-US', { month: '2-digit' }),
+      monthLabel: monthLabel(post.frontmatter.date),
+      year: date.getFullYear() || '',
+    };
+  })
   .sort((a, b) => new Date(b.frontmatter.date || '').getTime() - new Date(a.frontmatter.date || '').getTime());
 
 const categories = genresData.genres;
-const months = [...new Set(archive.map(p => p.month))].filter(Boolean);
+const startYear = 2026;
+const currentYear = Math.max(new Date().getFullYear(), startYear);
+const years = Array.from({ length: currentYear - startYear + 1 }, (_, i) => startYear + i);
+const months = [
+  { value: '', label: 'All Months' },
+  { value: '01', label: 'January' },
+  { value: '02', label: 'February' },
+  { value: '03', label: 'March' },
+  { value: '04', label: 'April' },
+  { value: '05', label: 'May' },
+  { value: '06', label: 'June' },
+  { value: '07', label: 'July' },
+  { value: '08', label: 'August' },
+  { value: '09', label: 'September' },
+  { value: '10', label: 'October' },
+  { value: '11', label: 'November' },
+  { value: '12', label: 'December' },
+];
 ---
 
 <BaseLayout title="Archive List — Anatomy of Becoming" description="Browse the archive by category and date">
@@ -39,22 +61,33 @@ const months = [...new Set(archive.map(p => p.month))].filter(Boolean);
         ))}
       </select>
 
+      <select id="filter-year" class="px-4 py-2 rounded-soft border border-softborder bg-ivory text-espresso">
+        <option value="all">All Years</option>
+        {years.map(year => (
+          <option value={year}>{year}</option>
+        ))}
+      </select>
+
       <select id="filter-month" class="px-4 py-2 rounded-soft border border-softborder bg-ivory text-espresso">
-        <option value="all">All Dates</option>
         {months.map(m => (
-          <option value={m}>{m}</option>
+          <option value={m.value}>{m.label}</option>
         ))}
       </select>
     </div>
 
     <div id="archive-list" class="grid md:grid-cols-2 gap-6">
       {archive.map(item => (
-        <article class="card p-6 border transition hover:-translate-y-1" data-category={item.category} data-month={item.month}>
+        <article
+          class="card p-6 border transition hover:-translate-y-1"
+          data-category={item.category}
+          data-month={item.month}
+          data-year={item.year}
+        >
           <a href={`/thoughts/${item.frontmatter.slug}`} class="group block">
             <p class="text-xs uppercase text-taupe/70 mb-2">{item.category} · {item.type}</p>
             <h3 class="font-serif text-xl group-hover:text-rose transition-colors">{item.frontmatter.title}</h3>
             <p class="text-sm text-taupe mt-2">{item.frontmatter.excerpt}</p>
-            <p class="text-xs text-taupe mt-3">{item.frontmatter.date}</p>
+            <p class="text-xs text-taupe mt-3">{item.monthLabel}</p>
           </a>
         </article>
       ))}
@@ -63,25 +96,30 @@ const months = [...new Set(archive.map(p => p.month))].filter(Boolean);
 
   <script>
     const categorySelect = document.getElementById('filter-category');
+    const yearSelect = document.getElementById('filter-year');
     const monthSelect = document.getElementById('filter-month');
     const list = document.getElementById('archive-list');
 
     function filter() {
       const cat = categorySelect.value;
+      const year = yearSelect.value;
       const mon = monthSelect.value;
       list.querySelectorAll('article').forEach(a => {
         const matchCat = cat === 'all' || a.dataset.category === cat;
-        const matchMon = mon === 'all' || a.dataset.month === mon;
-        a.style.display = (matchCat && matchMon) ? '' : 'none';
+        const matchYear = year === 'all' || a.dataset.year === year;
+        const matchMon = mon === '' || a.dataset.month === mon;
+        a.style.display = (matchCat && matchYear && matchMon) ? '' : 'none';
       });
     }
 
     categorySelect.addEventListener('change', filter);
+    yearSelect.addEventListener('change', filter);
     monthSelect.addEventListener('change', filter);
 
     // apply initial filters from URL
     const params = new URLSearchParams(window.location.search);
     if (params.get('category')) categorySelect.value = params.get('category');
+    if (params.get('year')) yearSelect.value = params.get('year');
     if (params.get('month')) monthSelect.value = params.get('month');
     filter();
   </script>
