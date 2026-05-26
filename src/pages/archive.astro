@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const posts = await Astro.glob('../content/blog/*.md');
+import genres from '../data/genres.json';
 const archive = posts
   .map((post) => ({
     ...post,
@@ -11,7 +12,7 @@ const archive = posts
   }))
   .sort((a, b) => b.dateValue.getTime() - a.dateValue.getTime());
 
-const categories = [...new Set(archive.map((post) => post.category))].sort();
+const categories = genres; // controlled by src/data/genres.json
 const types = [...new Set(archive.map((post) => post.type))].sort();
 const monthKeys = [...new Set(archive.map((post) => monthLabel(post.frontmatter.date)))]
   .filter(Boolean);

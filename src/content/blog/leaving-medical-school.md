@@ -1,7 +1,7 @@
 ---
 title: "Thoughts on Leaving Medical School"
 excerpt: "Leaving wasn't failure. It was survival."
-category: "Med School Diaries"
+category: "Medicine"
 date: "September 2024"
 slug: "leaving-medical-school"
 ---

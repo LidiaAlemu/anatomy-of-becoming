@@ -1,37 +1,25 @@
 ---
 import ThoughtCard from './ThoughtCard.astro';
 
-const latestPosts = [
-  {
-    title: "Thoughts on Letting Go of Someone You Still Love",
-    excerpt: "Some goodbyes are quiet. You don't block them. You just understand that staying will destroy you.",
-    slug: "letting-go-of-someone-you-still-love",
-    category: "Healing",
-    date: "October 2024"
-  },
-  {
-    title: "Thoughts on Leaving Medical School",
-    excerpt: "Leaving wasn't failure. It was survival.",
-    slug: "leaving-medical-school",
-    category: "Med School Diaries",
-    date: "September 2024"
-  },
-  {
-    title: "Thoughts on the Versions of Me I Outgrew",
-    excerpt: "I miss parts of her. But I don't miss the life I had to survive in.",
-    slug: "versions-of-me-i-outgrew",
-    category: "Identity",
-    date: "September 2024"
-  }
-];
+const allPosts = await Astro.glob('../content/blog/*.md');
+const latestPosts = allPosts
+  .map(p => ({
+    title: p.frontmatter.title,
+    excerpt: p.frontmatter.excerpt,
+    slug: p.frontmatter.slug,
+    category: p.frontmatter.category,
+    date: p.frontmatter.date
+  }))
+  .sort((a, b) => new Date(b.date || '').getTime() - new Date(a.date || '').getTime())
+  .slice(0, 3);
 ---
 
 <section id="thoughts" class="container-soft py-section">
-  <h2 class="section-title">Latest Thoughts</h2>
+    <h2 class="section-title">Latest Thoughts</h2>
   <p class="section-subtitle">Words from the quiet places between healing and becoming.</p>
 
   <div class="grid lg:grid-cols-3 gap-8 lg:gap-10">
-    <div class="lg:col-span-2 grid md:grid-cols-2 gap-8">
+      <div class="lg:col-span-2 grid md:grid-cols-2 gap-8">
       {latestPosts.map((post) => (
         <ThoughtCard 
           title={post.title} 

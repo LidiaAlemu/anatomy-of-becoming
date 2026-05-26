@@ -4,11 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const cusdisAppId = "10d1bb87-b0b2-4431-9ee1-90a65bd646a8";
 const formspreeEndpoint = "https://formspree.io/f/xdajlrpe";
 
-const stories = [
-  { id: 1, text: "I stayed in a relationship long after I knew it was hurting me. I was more afraid of being alone than I was of losing myself.", initial: "A" },
-  { id: 2, text: "I come from a family where love was conditional. I'm still learning that I'm allowed to take up space.", initial: "M" },
-  { id: 3, text: "Everyone saw me as the strong one. No one noticed how heavy everything was on the inside.", initial: "K" }
-];
+import genres from '../data/genres.json';
 
 // Construct the base URL for the current page (used in Cusdis page-url)
 const baseUrl = Astro.url.origin + Astro.url.pathname;
@@ -33,18 +29,49 @@ const baseUrl = Astro.url.origin + Astro.url.pathname;
     <div class="card p-8 md:p-12 mb-16">
       <h2 class="font-serif text-2xl text-espresso mb-6 text-center">Share Your Story</h2>
       <form action={formspreeEndpoint} method="POST" class="space-y-6">
+        <input type="hidden" name="_subject" value="New shared thought from Anatomy of Becoming" />
+        <div class="grid gap-6 md:grid-cols-[1fr_1fr]">
+          <div>
+            <label class="block text-taupe text-sm font-sans mb-2">Title (optional)</label>
+            <input type="text" name="title" placeholder="Short title" class="w-full px-5 py-3 rounded-soft bg-ivory border border-softborder text-espresso placeholder:text-taupe/50 focus:outline-none focus:border-rose/50 font-sans text-sm" />
+          </div>
+          <div>
+            <label class="block text-taupe text-sm font-sans mb-2">Name (optional)</label>
+            <input type="text" name="name" placeholder="Your name or leave blank" class="w-full px-5 py-3 rounded-soft bg-ivory border border-softborder text-espresso placeholder:text-taupe/50 focus:outline-none focus:border-rose/50 font-sans text-sm" />
+          </div>
+        </div>
+
         <div>
           <label class="block text-taupe text-sm font-sans mb-2">Your Story</label>
           <textarea
             name="story"
             rows="6"
-            placeholder="Write what's on your heart. Everything shared is anonymous."
+            placeholder="Write the thought or story you want to share."
             required
             class="w-full px-5 py-3 rounded-soft bg-ivory border border-softborder text-espresso placeholder:text-taupe/50 focus:outline-none focus:border-rose/50 font-sans text-sm resize-y"
           ></textarea>
         </div>
+
+        <div class="grid gap-6 md:grid-cols-[1fr_1fr]">
+          <div>
+            <label class="block text-taupe text-sm font-sans mb-2">Emotional Category</label>
+            <select name="category" required class="w-full px-5 py-3 rounded-soft bg-ivory border border-softborder text-espresso focus:outline-none focus:border-rose/50 font-sans text-sm">
+              <option value="">Choose a category</option>
+              {genres.map(g => (
+                <option value={g}>{g}</option>
+              ))}
+            </select>
+          </div>
+          <div class="flex items-end gap-3">
+            <label class="flex items-center gap-3 bg-ivory rounded-soft px-4 py-3 border border-softborder w-full cursor-pointer">
+              <input type="checkbox" name="anonymous" value="yes" checked class="accent-rose" />
+              <span class="text-sm text-espresso font-sans">Submit anonymously</span>
+            </label>
+          </div>
+        </div>
+
         <div class="text-center">
-          <button type="submit" class="btn-primary">Share Anonymously</button>
+          <button type="submit" class="btn-primary">Send softly</button>
         </div>
       </form>
       <p class="text-xs text-taupe/60 text-center mt-4 font-sans">
@@ -52,30 +79,16 @@ const baseUrl = Astro.url.origin + Astro.url.pathname;
       </p>
     </div>
 
-    <!-- Stories Cards with Cusdis Comments -->
-    <div class="space-y-12">
-      {stories.map((story) => (
-        <div id={`story-${story.id}`}>
-          <div class="card p-6 md:p-8 flex items-start gap-5">
-            <div class="w-12 h-12 rounded-full bg-rose/20 flex items-center justify-center flex-shrink-0">
-              <span class="font-serif text-rose text-xl">{story.initial}</span>
-            </div>
-            <p class="text-espresso/80 italic text-base leading-relaxed">“{story.text}”</p>
-          </div>
-
-          <!-- Cusdis Thread -->
-          <div class="mt-4 ml-6 cusdis-wrapper">
-            <div
-              id={`cusdis_thread_${story.id}`}
-              data-host="https://cusdis.com"
-              data-app-id={cusdisAppId}
-              data-page-id={`story-${story.id}`}
-              data-page-url={`${baseUrl}#story-${story.id}`}
-              data-page-title={`Story ${story.id} — Anatomy of Becoming`}
-            ></div>
-          </div>
-        </div>
-      ))}
+    <!-- Cusdis thread for shared thoughts (page-level) -->
+    <div class="card p-6 mt-8">
+      <div
+        id="cusdis_thread_shared"
+        data-host="https://cusdis.com"
+        data-app-id={cusdisAppId}
+        data-page-id={`shared-thoughts`}
+        data-page-url={`${baseUrl}#shared-thoughts`}
+        data-page-title={`Shared Thoughts — Anatomy of Becoming`}
+      ></div>
     </div>
   </section>
 </BaseLayout>

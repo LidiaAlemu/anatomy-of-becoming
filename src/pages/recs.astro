@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const allRecs = await Astro.glob('../content/recs/*.md');
-const genres = [...new Set(allRecs.map(rec => rec.frontmatter.genre).filter(Boolean))].sort();
+import genres from '../data/genres.json';
 ---
 
 <BaseLayout

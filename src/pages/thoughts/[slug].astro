@@ -55,6 +55,31 @@ const { frontmatter } = post;
       <slot />
     </div>
 
+    <!-- Optional structured list (todo or simple list) -->
+    {frontmatter.list && (
+      <div class="mt-8">
+        <div class="card p-6">
+          <h3 class="font-serif text-xl text-espresso mb-3">{frontmatter.listTitle || frontmatter.title}</h3>
+          {frontmatter.listType === 'todo' ? (
+            <ul class="space-y-3">
+              {frontmatter.list.map(item => (
+                <li class="flex items-start gap-3">
+                  <input type="checkbox" disabled class="accent-rose mt-1" />
+                  <span class="text-taupe">{item}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <ol class="list-decimal list-inside text-taupe space-y-2">
+              {frontmatter.list.map(item => (
+                <li>{item}</li>
+              ))}
+            </ol>
+          )}
+        </div>
+      </div>
+    )}
+
     <!-- Divider -->
     <div class="divider my-12"></div>
 

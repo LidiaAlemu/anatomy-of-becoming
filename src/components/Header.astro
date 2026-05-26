@@ -20,19 +20,15 @@ const navLinkClass =
   <!-- Left navigation (desktop) -->
   <nav class="hidden lg:flex items-center gap-6 xl:gap-8 shrink-0" aria-label="Primary">
     <a href="/" class={navLinkClass}>Home</a>
+    <a href="/about" class={navLinkClass}>About</a>
     <a href="/thoughts" class={navLinkClass}>Thoughts</a>
     <a href="/stories" class={navLinkClass}>Stories</a>
     <a href="/archive" class={navLinkClass}>Archive</a>
+    <a href="/recs" class={navLinkClass}>Recs</a>
+    <a href="/shared-thoughts" class={navLinkClass}>Submit</a>
   </nav>
 
   <div class="hidden lg:block flex-1 min-w-6" aria-hidden="true"></div>
-
-  <!-- Right navigation (desktop) -->
-  <nav class="hidden lg:flex items-center gap-6 xl:gap-8 shrink-0" aria-label="Secondary">
-    <a href="/recs" class={navLinkClass}>Recs</a>
-    <a href="/about" class={navLinkClass}>About</a>
-    <a href="/shared-thoughts" class={navLinkClass}>Submit</a>
-  </nav>
 
   <!-- Search icon (desktop) -->
   <div class="hidden lg:flex items-center shrink-0">
@@ -53,11 +49,11 @@ const navLinkClass =
   <!-- Mobile menu overlay -->
   <div id="mobile-menu" class="hidden fixed inset-0 bg-ivory/95 backdrop-blur-sm z-40 flex flex-col items-center justify-center gap-8 text-xl font-serif text-espresso" role="dialog" aria-modal="true" aria-label="Site menu">
     <a href="/" class="hover:text-rose transition-colors">Home</a>
+    <a href="/about" class="hover:text-rose transition-colors">About</a>
     <a href="/thoughts" class="hover:text-rose transition-colors">Thoughts</a>
     <a href="/stories" class="hover:text-rose transition-colors">Stories</a>
     <a href="/archive" class="hover:text-rose transition-colors">Archive</a>
     <a href="/recs" class="hover:text-rose transition-colors">Recs</a>
-    <a href="/about" class="hover:text-rose transition-colors">About</a>
     <a href="/shared-thoughts" class="hover:text-rose transition-colors">Submit</a>
     <button id="menu-close" class="mt-8 text-taupe hover:text-rose transition-colors text-sm uppercase tracking-wider">Close</button>
   </div>

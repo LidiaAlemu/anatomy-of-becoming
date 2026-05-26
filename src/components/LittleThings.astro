@@ -1,11 +1,17 @@
 ---
-const categories = [
-  { name: "Books", emoji: "📚" },
-  { name: "Playlists", emoji: "🎧" },
-  { name: "Journal Prompts", emoji: "✍️" },
-  { name: "Films", emoji: "🎬" },
-  { name: "Scents", emoji: "🕯️" }
-];
+const recs = await Astro.glob('../content/recs/*.md');
+const types = [...new Set(recs.map(r => r.frontmatter.type).filter(Boolean))];
+const emojiMap = {
+  book: '📖',
+  playlist: '🎧',
+  film: '🎬',
+  podcast: '🎙️',
+  article: '📝',
+  journal: '📓',
+  quote: '❝'
+};
+
+const categories = types.map(t => ({ name: t, emoji: emojiMap[t] || '★' }));
 ---
 
 <section id="little-things" class="container-soft py-section">
@@ -16,7 +22,7 @@ const categories = [
 
   <div class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
     {categories.map((cat, i) => (
-      <a href="#" class={`card p-6 text-center group cursor-pointer animate-slide-up stagger-${i + 1}`}>
+      <a href={`/recs?type=${cat.name}`} class={`card p-6 text-center group cursor-pointer animate-slide-up stagger-${i + 1}`}>
         <span class="text-4xl md:text-5xl block mb-3 group-hover:scale-110 transition-transform duration-300 inline-block">
           {cat.emoji}
         </span>
