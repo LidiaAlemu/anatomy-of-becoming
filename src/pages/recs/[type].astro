@@ -7,6 +7,8 @@ const allRecs = await Astro.glob('../../content/recs/*.md');
 function normalizeTypeKey(type) {
   if (!type) return '';
   const lower = type.toLowerCase();
+  if (lower === 'film') return 'movie';
+  if (lower === 'movies') return 'movie';
   return lower.endsWith('s') ? lower.slice(0, -1) : lower;
 }
 
@@ -14,7 +16,7 @@ const typeKey = normalizeTypeKey(Astro.params.type);
 const typeConfig = recsFilters.types[typeKey] || null;
 
 const filteredRecs = allRecs
-  .filter((rec) => (rec.frontmatter.type || '').toLowerCase() === typeKey)
+  .filter((rec) => normalizeTypeKey(rec.frontmatter.type) === typeKey)
   .map((rec) => ({
     ...rec,
     genre: rec.frontmatter.genre || 'General',

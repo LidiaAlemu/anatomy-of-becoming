@@ -4,9 +4,16 @@ import recsFilters from '../data/recsFilters.json';
 
 const allRecs = await Astro.glob('../content/recs/*.md');
 const typeEntries = Object.entries(recsFilters.types).filter(([key]) => key !== 'all');
+
+function normalizeTypeKey(type) {
+  if (!type) return '';
+  const lower = type.toLowerCase();
+  return lower === 'film' ? 'movie' : lower;
+}
+
 const typeCards = typeEntries.map(([key, config]) => {
   const items = allRecs
-    .filter((rec) => (rec.frontmatter.type || '').toLowerCase() === key)
+    .filter((rec) => normalizeTypeKey(rec.frontmatter.type) === key)
     .map((rec) => ({
       ...rec,
       dateValue: new Date(rec.frontmatter.date || '1970-01-01').getTime(),
@@ -70,7 +77,7 @@ const typeCards = typeEntries.map(([key, config]) => {
     <div class="mt-12 rounded-soft border border-softborder bg-ivory p-8">
       <h2 class="font-serif text-2xl text-espresso mb-3">Admin filter controls</h2>
       <p class="text-sm text-taupe mb-3">Update every recommendation section by editing <code>src/data/recsFilters.json</code>. Add or remove genre filters for each type, including podcasts, quotes, and articles.</p>
-      <pre class="rounded-md bg-white p-4 text-xs overflow-x-auto border border-softborder">{
+      <pre class="rounded-md bg-white p-4 text-xs overflow-x-auto border border-softborder">&#123;
   "types": {
     "book": { "genres": ["All", "Romance", "Fantasy", "Romantasy", "Thriller"] },
     "movie": { "genres": ["All", "Romance", "Fantasy", "Thriller", "Drama"] },
@@ -78,7 +85,7 @@ const typeCards = typeEntries.map(([key, config]) => {
     "quote": { "genres": ["All"] },
     "article": { "genres": ["All"] }
   }
-}</pre>
+&#125;</pre>
     </div>
   </section>
 </BaseLayout>

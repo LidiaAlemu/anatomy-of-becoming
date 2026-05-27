@@ -32,7 +32,7 @@ collections:
     slug: "{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Type", name: "type", widget: "select", options: ["book", "playlist", "film", "podcast", "article"], required: true }
+      - { label: "Type", name: "type", widget: "select", options: ["book", "movie", "podcast", "quote", "article"], required: true }
       - { label: "Category", name: "category", widget: "select", options: ["Grief", "Healing", "Identity", "Love", "Faith", "Loneliness", "Becoming", "Silence", "Growth", "Hope", "Womanhood", "Medicine"], required: false }
       - { label: "Description", name: "description", widget: "string" }
       - { label: "Rating", name: "rating", widget: "number", min: 0, max: 10, step: 1 }
